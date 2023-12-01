@@ -1,0 +1,512 @@
+[gd_scene load_steps=33 format=3 uid="uid://pd70wmcw0wmd"]
+
+[ext_resource type="Texture2D" uid="uid://bjbwkwccbxij3" path="res://ui/alarm-clock (1).svg" id="1_gs4b0"]
+[ext_resource type="PackedScene" uid="uid://cdd3sdkbwlicq" path="res://resources/cube.tscn" id="1_uy5c0"]
+[ext_resource type="Script" path="res://scripts/UIManager.gd" id="1_vdyak"]
+[ext_resource type="Material" uid="uid://cgmk7apkk6oma" path="res://materials/backgroundMat.tres" id="2_er2kj"]
+[ext_resource type="Script" path="res://scripts/MergePlatform.gd" id="3_2m5by"]
+[ext_resource type="Texture2D" uid="uid://cpcouq0lg63d2" path="res://ui/anticlockwise-rotation.svg" id="3_4gjfq"]
+[ext_resource type="Texture2D" uid="uid://df37d587j2qtb" path="res://ui/round-star.svg" id="4_bwqj1"]
+[ext_resource type="Script" path="res://scripts/DragManager.gd" id="4_yk8ic"]
+[ext_resource type="Texture2D" uid="uid://dhcfowmkwrqxw" path="res://ui/next-button.svg" id="5_gs1ge"]
+[ext_resource type="Script" path="res://scripts/MergeManager.gd" id="5_urwd0"]
+[ext_resource type="PackedScene" uid="uid://cb30x7f2yehkn" path="res://resources/capsule.tscn" id="6_g8gfw"]
+[ext_resource type="PackedScene" uid="uid://0xtu6uvx3ehq" path="res://resources/cylinder.tscn" id="7_ce88a"]
+[ext_resource type="Material" uid="uid://1vtxwxllxrls" path="res://materials/green.tres" id="8_lvamh"]
+[ext_resource type="PackedScene" uid="uid://bue8wumab8nl8" path="res://resources/sphere.tscn" id="8_yliri"]
+[ext_resource type="Script" path="res://scripts/SpawnManager.gd" id="9_k6hsg"]
+[ext_resource type="PackedScene" uid="uid://bx5ndhl1itly7" path="res://resources/capsule2.tscn" id="10_ueenl"]
+[ext_resource type="PackedScene" uid="uid://cdsfv4enqlgm4" path="res://resources/cube2.tscn" id="11_fnjru"]
+[ext_resource type="PackedScene" uid="uid://b7n2en2kanl1a" path="res://resources/cylinder2.tscn" id="12_yu1mi"]
+[ext_resource type="PackedScene" uid="uid://dgq43tk4pp0x2" path="res://resources/sphere2.tscn" id="13_hgx1j"]
+[ext_resource type="Script" path="res://scripts/GameManager.gd" id="17_v0dwr"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_erf5t"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_7affp"]
+sky_material = SubResource("ProceduralSkyMaterial_erf5t")
+
+[sub_resource type="Environment" id="Environment_jkyfj"]
+background_mode = 2
+sky = SubResource("Sky_7affp")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jguvq"]
+bg_color = Color(0.176471, 0.176471, 0.176471, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="Animation" id="Animation_1yxaw"]
+resource_name = "gameOverText_Scale"
+length = 1.5
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:scale")
+tracks/0/interp = 2
+tracks/0/loop_wrap = false
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 1.5),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(1.2, 1.2), Vector2(1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_e2d1o"]
+resource_name = "winText_Scale"
+length = 1.5
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../../Win_Panel/Win_Text:scale")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 1.5),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(1.2, 1.2), Vector2(1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_evvh6"]
+_data = {
+"gameOverText_Scale": SubResource("Animation_1yxaw"),
+"winText_Scale": SubResource("Animation_e2d1o")
+}
+
+[sub_resource type="BoxMesh" id="BoxMesh_vm2vb"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_t7avx"]
+size = Vector3(20, 0.1, 20)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_nk8u7"]
+size = Vector3(2, 10, 20)
+
+[sub_resource type="BoxMesh" id="BoxMesh_s76mq"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_fue7o"]
+size = Vector3(5.10344, 4.21324, 3.09886)
+
+[node name="Node3D" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_jkyfj")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.258819, 0.965926, 0, -0.965926, 0.258819, 0, 10, 4.041)
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.663404, 0.748261, 0, -0.748261, 0.663404, 0, 1.27786, 1.11794)
+shadow_enabled = true
+
+[node name="UIManager" type="Control" parent="."]
+unique_name_in_owner = true
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_vdyak")
+
+[node name="InGame_Panel" type="Control" parent="UIManager"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Timer_Panel" type="Panel" parent="UIManager/InGame_Panel"]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -88.0
+offset_right = 88.0
+offset_bottom = 88.0
+grow_horizontal = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_jguvq")
+
+[node name="Timer_Icon" type="TextureRect" parent="UIManager/InGame_Panel/Timer_Panel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -86.0
+offset_top = -30.0
+offset_right = -30.0
+offset_bottom = 26.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_gs4b0")
+expand_mode = 1
+
+[node name="Timer_Text" type="Label" parent="UIManager/InGame_Panel/Timer_Panel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -23.0
+offset_top = -28.0
+offset_right = 80.0
+offset_bottom = 30.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 35
+text = "01:00"
+vertical_alignment = 1
+
+[node name="Button_Restart" type="Button" parent="UIManager/InGame_Panel"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -72.115
+offset_top = 19.46
+offset_right = -22.115
+offset_bottom = 69.46
+grow_horizontal = 0
+icon = ExtResource("3_4gjfq")
+clip_text = true
+expand_icon = true
+
+[node name="Star_Panel" type="Panel" parent="UIManager/InGame_Panel"]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 1
+offset_left = 16.0
+offset_top = 9.0
+offset_right = 144.0
+offset_bottom = 67.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_jguvq")
+
+[node name="Star_Icon" type="TextureRect" parent="UIManager/InGame_Panel/Star_Panel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -60.0
+offset_top = -28.0
+offset_right = -4.0
+offset_bottom = 28.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("4_bwqj1")
+expand_mode = 1
+
+[node name="Star_Text" type="Label" parent="UIManager/InGame_Panel/Star_Panel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -12.0
+offset_top = -28.0
+offset_right = 60.0
+offset_bottom = 27.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 35
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Win_Panel" type="Panel" parent="UIManager"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Star_Panel" type="Panel" parent="UIManager/Win_Panel"]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -64.0
+offset_top = -163.0
+offset_right = 64.0001
+offset_bottom = -105.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_jguvq")
+
+[node name="Star_Icon" type="TextureRect" parent="UIManager/Win_Panel/Star_Panel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -60.0
+offset_top = -28.0
+offset_right = -4.0
+offset_bottom = 28.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("4_bwqj1")
+expand_mode = 1
+
+[node name="Star_Text" type="Label" parent="UIManager/Win_Panel/Star_Panel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -12.0
+offset_top = -28.0
+offset_right = 60.0
+offset_bottom = 27.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 35
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Win_Text" type="Label" parent="UIManager/Win_Panel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -117.0
+offset_top = -84.0
+offset_right = 123.0
+offset_bottom = -4.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1.12447, 1.12447)
+pivot_offset = Vector2(120, 40)
+theme_override_font_sizes/font_size = 50
+text = "YOU WİN!"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Button_Restart" type="Button" parent="UIManager/Win_Panel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -36.0
+offset_top = 11.0
+offset_right = 36.0
+offset_bottom = 83.0
+grow_horizontal = 2
+grow_vertical = 2
+icon = ExtResource("5_gs1ge")
+clip_text = true
+expand_icon = true
+
+[node name="Fail_Panel" type="Panel" parent="UIManager"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="GameOver_Text" type="Label" parent="UIManager/Fail_Panel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -151.0
+offset_top = -84.0
+offset_right = 149.0
+offset_bottom = 16.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1.0579, 1.0579)
+pivot_offset = Vector2(150, 50)
+theme_override_font_sizes/font_size = 50
+text = "Game Over!"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="UIManager/Fail_Panel/GameOver_Text"]
+libraries = {
+"": SubResource("AnimationLibrary_evvh6")
+}
+
+[node name="Button_Restart" type="Button" parent="UIManager/Fail_Panel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -38.0
+offset_top = 13.0
+offset_right = 38.0
+offset_bottom = 89.0
+grow_horizontal = 2
+grow_vertical = 2
+icon = ExtResource("3_4gjfq")
+clip_text = true
+expand_icon = true
+
+[node name="Ground" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.05, 0)
+
+[node name="Ground" type="MeshInstance3D" parent="Ground"]
+transform = Transform3D(41.0746, 0, 0, 0, 0.1, 0, 0, 0, 45.9754, 0, 0, 0)
+material_override = ExtResource("2_er2kj")
+mesh = SubResource("BoxMesh_vm2vb")
+skeleton = NodePath("../..")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Ground"]
+shape = SubResource("BoxShape3D_t7avx")
+
+[node name="Walls" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.85033, 3.12926, 0)
+
+[node name="Ground2" type="StaticBody3D" parent="Walls"]
+input_ray_pickable = false
+
+[node name="Ground" type="MeshInstance3D" parent="Walls/Ground2"]
+transform = Transform3D(2, 0, 0, 0, 10, 0, 0, 0, 20, 0, 0, 0)
+visible = false
+material_override = ExtResource("2_er2kj")
+mesh = SubResource("BoxMesh_vm2vb")
+skeleton = NodePath("../../..")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Walls/Ground2"]
+shape = SubResource("BoxShape3D_nk8u7")
+
+[node name="Ground3" type="StaticBody3D" parent="Walls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.3515, -1.90735e-06, -0.00198269)
+input_ray_pickable = false
+
+[node name="Ground" type="MeshInstance3D" parent="Walls/Ground3"]
+transform = Transform3D(2, 0, 0, 0, 10, 0, 0, 0, 20, 0, 0, 0)
+visible = false
+material_override = ExtResource("2_er2kj")
+mesh = SubResource("BoxMesh_vm2vb")
+skeleton = NodePath("../../..")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Walls/Ground3"]
+shape = SubResource("BoxShape3D_nk8u7")
+
+[node name="Ground4" type="StaticBody3D" parent="Walls"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 7.67674, 0, 8.94667)
+input_ray_pickable = false
+
+[node name="Ground" type="MeshInstance3D" parent="Walls/Ground4"]
+transform = Transform3D(2, 0, 0, 0, 10, 0, 0, 0, 20, 0, 0, 0)
+visible = false
+material_override = ExtResource("2_er2kj")
+mesh = SubResource("BoxMesh_vm2vb")
+skeleton = NodePath("../../..")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Walls/Ground4"]
+shape = SubResource("BoxShape3D_nk8u7")
+
+[node name="Ground6" type="StaticBody3D" parent="Walls"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 7.67674, -7.79724, 4.08249)
+input_ray_pickable = false
+
+[node name="Ground" type="MeshInstance3D" parent="Walls/Ground6"]
+transform = Transform3D(2, 0, 0, 0, 10, 0, 0, 0, 20, 0, 0, 0)
+visible = false
+material_override = ExtResource("2_er2kj")
+mesh = SubResource("BoxMesh_vm2vb")
+skeleton = NodePath("../../..")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Walls/Ground6"]
+shape = SubResource("BoxShape3D_nk8u7")
+
+[node name="Ground5" type="StaticBody3D" parent="Walls"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 7.67475, -1.90735e-06, -6.40482)
+input_ray_pickable = false
+
+[node name="Ground" type="MeshInstance3D" parent="Walls/Ground5"]
+transform = Transform3D(2, 0, 0, 0, 10, 0, 0, 0, 20, 0, 0, 0)
+visible = false
+material_override = ExtResource("2_er2kj")
+mesh = SubResource("BoxMesh_vm2vb")
+skeleton = NodePath("../../..")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Walls/Ground5"]
+shape = SubResource("BoxShape3D_nk8u7")
+
+[node name="MergePlatform" type="Area3D" parent="."]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00168657, 0.0185857, 6.17441)
+input_ray_pickable = false
+script = ExtResource("3_2m5by")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="MergePlatform"]
+transform = Transform3D(2, 0, 0, 0, 0.1, 0, 0, 0, 2, -0.988916, 0.0675457, 0.000138283)
+material_override = ExtResource("8_lvamh")
+mesh = SubResource("BoxMesh_s76mq")
+skeleton = NodePath("")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="MergePlatform"]
+transform = Transform3D(2, 0, 0, 0, 0.1, 0, 0, 0, 2, 1.11108, 0.0675457, 0.000138283)
+material_override = ExtResource("8_lvamh")
+mesh = SubResource("BoxMesh_s76mq")
+skeleton = NodePath("")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="MergePlatform"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0610837, 0.0675457, 0.000138283)
+shape = SubResource("BoxShape3D_fue7o")
+
+[node name="DragManager" type="Node3D" parent="."]
+unique_name_in_owner = true
+script = ExtResource("4_yk8ic")
+yOffset = 2.0
+
+[node name="MergeManager" type="Node3D" parent="."]
+unique_name_in_owner = true
+script = ExtResource("5_urwd0")
+
+[node name="SpawnManager" type="Node3D" parent="." node_paths=PackedStringArray("spawnPoses")]
+unique_name_in_owner = true
+script = ExtResource("9_k6hsg")
+prefabs = Array[PackedScene]([ExtResource("1_uy5c0"), ExtResource("6_g8gfw"), ExtResource("7_ce88a"), ExtResource("8_yliri"), ExtResource("10_ueenl"), ExtResource("11_fnjru"), ExtResource("12_yu1mi"), ExtResource("13_hgx1j")])
+spawnPoses = [NodePath("Node3D"), NodePath("Node3D2")]
+
+[node name="Node3D" type="Node3D" parent="SpawnManager"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.12607, 1.0022, -3.85074)
+
+[node name="Node3D2" type="Node3D" parent="SpawnManager"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.49755, 3.40033, 1.91764)
+
+[node name="GameManager" type="Node3D" parent="."]
+unique_name_in_owner = true
+script = ExtResource("17_v0dwr")
+gameTime = 90.0
+
+[connection signal="pressed" from="UIManager/InGame_Panel/Button_Restart" to="UIManager" method="_on_button_restart_pressed"]
+[connection signal="pressed" from="UIManager/Win_Panel/Button_Restart" to="UIManager" method="_on_button_restart_pressed"]
+[connection signal="pressed" from="UIManager/Fail_Panel/Button_Restart" to="UIManager" method="_on_button_restart_pressed"]
+[connection signal="body_entered" from="MergePlatform" to="MergePlatform" method="_on_body_entered"]
+[connection signal="body_exited" from="MergePlatform" to="MergePlatform" method="_on_body_exited"]

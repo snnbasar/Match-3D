@@ -1,0 +1,23 @@
+[gd_scene load_steps=5 format=3 uid="uid://dgq43tk4pp0x2"]
+
+[ext_resource type="Script" path="res://scripts/Object.gd" id="1_kmrep"]
+[ext_resource type="Material" uid="uid://h160sm0vthbt" path="res://materials/blue.tres" id="2_3le1j"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_paxhg"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_c48x7"]
+
+[node name="Sphere" type="RigidBody3D" groups=["mergeable"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.96284, 1.35674, -2.32606)
+script = ExtResource("1_kmrep")
+myId = 7
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+material_override = ExtResource("2_3le1j")
+mesh = SubResource("SphereMesh_paxhg")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("SphereShape3D_c48x7")
+
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]

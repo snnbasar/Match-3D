@@ -1,0 +1,23 @@
+[gd_scene load_steps=5 format=3 uid="uid://bx5ndhl1itly7"]
+
+[ext_resource type="Script" path="res://scripts/Object.gd" id="1_ar2ap"]
+[ext_resource type="Material" uid="uid://h160sm0vthbt" path="res://materials/blue.tres" id="2_hhjbs"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_l5mq5"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_4mlfv"]
+
+[node name="Capsule" type="RigidBody3D" groups=["mergeable"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.70894, -1.18584)
+script = ExtResource("1_ar2ap")
+myId = 5
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+material_override = ExtResource("2_hhjbs")
+mesh = SubResource("CapsuleMesh_l5mq5")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_4mlfv")
+
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
